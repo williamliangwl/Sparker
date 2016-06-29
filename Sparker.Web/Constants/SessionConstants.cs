@@ -5,8 +5,8 @@ using System.Web;
 
 namespace Sparker.Web.Constants
 {
-    public class ApiConstants
+    public class SessionConstants
     {
-        public const string SparkerApiBaseUrl = "http://localhost:36294/api/";
+        public static readonly string MspSessionKey = "Msp";
     }
 }

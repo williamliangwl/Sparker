@@ -60,6 +60,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -129,12 +133,21 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Constants\ApiConstants.cs" />
+    <Compile Include="Constants\SessionConstants.cs" />
+    <Compile Include="Controllers\EventDetailsController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MspsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Models\Attendee.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\EventDetail.cs" />
+    <Compile Include="Models\Msp.cs" />
+    <Compile Include="Models\Region.cs" />
+    <Compile Include="Models\University.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -145,8 +158,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\Logo-MSP-Joined.png" />
-    <Content Include="Images\Logo-MSP-text.png" />
-    <Content Include="Images\Logo-MSP.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -180,10 +191,20 @@
     <Content Include="Views\Msps\Details.cshtml" />
     <Content Include="Views\Msps\Edit.cshtml" />
     <Content Include="Views\Msps\Index.cshtml" />
+    <Content Include="Views\Msps\Login.cshtml" />
+    <Content Include="Views\Events\Create.cshtml" />
+    <Content Include="Views\Events\Delete.cshtml" />
+    <Content Include="Views\Events\Details.cshtml" />
+    <Content Include="Views\Events\Edit.cshtml" />
+    <Content Include="Views\Events\Index.cshtml" />
+    <Content Include="Views\EventDetails\Create.cshtml" />
+    <Content Include="Views\EventDetails\Delete.cshtml" />
+    <Content Include="Views\EventDetails\Details.cshtml" />
+    <Content Include="Views\EventDetails\Edit.cshtml" />
+    <Content Include="Views\EventDetails\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -192,12 +213,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sparker.Data\Sparker.Data.csproj">
-      <Project>{f35cb0a0-17fc-4e2c-9818-40dc3ba54bf3}</Project>
-      <Name>Sparker.Data</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sparker.Data.Models
+namespace Sparker.Web.Models
 {
     public enum MspRole
     {
@@ -15,16 +15,12 @@ namespace Sparker.Data.Models
 
     public class Msp
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        [DataType(DataType.EmailAddress)]
+        
         public string Email { get; set; }
-
-        [DataType(DataType.Password)]
+        
         public string Password { get; set; }
 
         public MspRole Role { get; set; }

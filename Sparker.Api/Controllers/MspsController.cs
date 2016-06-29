@@ -10,12 +10,24 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Sparker.Data.Models;
 using Sparker.Process.Repositories;
+using System.Web.Http.Results;
 
 namespace Sparker.Api.Controllers
 {
+    [RoutePrefix("api")]
     public class MspsController : ApiController
     {
         private MspRepository repo = new MspRepository();
+
+        [Route("Msps/Login")]
+        [ResponseType(typeof(Msp))]
+        [HttpPost]
+        public JsonResult<Msp> LoginMsp(Msp msp)
+        {
+            Msp result = repo.Get(msp.Email, msp.Password);
+
+            return Json(result);
+        }
 
         // GET: api/Msps
         public IEnumerable<Msp> GetMsps()
@@ -92,7 +104,9 @@ namespace Sparker.Api.Controllers
 
             return Ok(msp);
         }
+
         
+
         private bool MspExists(int id)
         {
             return repo.Get(id) != null;

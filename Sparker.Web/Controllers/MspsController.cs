@@ -6,22 +6,42 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Sparker.Data.Access;
-using Sparker.Data.Models;
 using Sparker.Web.Helpers;
 using Sparker.Web.Constants;
 using System.Threading.Tasks;
+using Sparker.Web.Models;
 
 namespace Sparker.Web.Controllers
 {
     public class MspsController : Controller
     {
-        private JsonHelper JsonHelper = new JsonHelper(ApiConstants.AttendanceApiBaseUrl);
+        private JsonHelper jsonHelper = new JsonHelper(ApiConstants.SparkerApiBaseUrl);
+
+        // GET: Msps/Login
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Msps/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login([Bind(Include = "Email,Password")] Msp msp)
+        {
+            Msp result = await jsonHelper.Post<Msp>("Msps/Login", msp);
+            if (result != null)
+            {
+                Session[SessionConstants.MspSessionKey] = result;
+                return RedirectToAction("Index");
+            }
+            else
+                return View();
+        }
 
         // GET: Msps
         public async Task<ActionResult> Index()
         {
-            var msps = await JsonHelper.Get<IEnumerable<Msp>>("Msps/");
+            var msps = await jsonHelper.Get<IEnumerable<Msp>>("Msps/");
             return View(msps);
         }
 
@@ -32,7 +52,7 @@ namespace Sparker.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Msp msp = await JsonHelper.Get<Msp>("Msps/" + id);
+            Msp msp = await jsonHelper.Get<Msp>("Msps/" + id);
             if (msp == null)
             {
                 return HttpNotFound();
@@ -43,7 +63,7 @@ namespace Sparker.Web.Controllers
         // GET: Msps/Create
         public async Task<ActionResult> Create()
         {
-            IEnumerable<Region> regions = await JsonHelper.Get<IEnumerable<Region>>("Regions/");
+            IEnumerable<Region> regions = await jsonHelper.Get<IEnumerable<Region>>("Regions/");
             ViewBag.RegionId = new SelectList(regions, "Id", "Name");
             return View();
         }
@@ -53,16 +73,18 @@ namespace Sparker.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Email,Password,Role,RegionId")] Msp msp)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Email,Password,Role,RegionId")] Msp msp)
         {
             if (ModelState.IsValid)
             {
                 //db.Msps.Add(msp);
                 //db.SaveChanges();
+                await jsonHelper.Post<Msp>("Msps/", msp);
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.RegionId = new SelectList(db.Regions, "Id", "Name", msp.RegionId);
+            IEnumerable<Region> regions = await jsonHelper.Get<IEnumerable<Region>>("Regions/");
+            ViewBag.RegionId = new SelectList(regions, "Id", "Name");
             return View(msp);
         }
 

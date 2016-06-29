@@ -50,5 +50,10 @@ namespace Sparker.Process.Repositories
             }
             return context.SaveChanges();
         }
+
+        public Msp Get(string email, string password)
+        {
+            return context.Msps.Where(m => m.Email.Equals(email) && m.Password.Equals(password)).FirstOrDefault();
+        }
     }
 }
